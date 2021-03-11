@@ -15,7 +15,7 @@ sex
 1 = weiblich 
 2 = männlich 
 3 = divers
-na= keine Angabe 
+0 = keine Angabe 
 
 
 cooperation
