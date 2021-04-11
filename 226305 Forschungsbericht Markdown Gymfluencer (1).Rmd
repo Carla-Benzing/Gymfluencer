@@ -1,0 +1,1852 @@
+---
+title: "226305 Forschungsbericht Gymfluencer"
+author: "Alina Lingg | al122, Bianca List | bl038, Carla Benzing | cb185 , Clara Seitz | cs297, Jule Müller | jm142"
+date: "Sommersemester 2021"
+output:
+  word_document:
+    toc: yes
+    toc_depth: '3'
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: 3
+    number_sections: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+subtitle: Analyse des Kooperationsnetzwerks von Fitness-Influencer:innen
+---
+
+
+_Anmerkung 2_: Aufbau des RMarkdown-Dokuments: Bitte übernehmen Sie den Header aus diesem Dokument, das ist der allererste Abschnitt aus dem Dokument mit "title:" etc. komplett. Dann wird Ihr Dokument automatisch richtig mit Inhaltsverzeichnis etc. erstellt. Denken Sie bitte an folgendes:
+1. Überschriften setzen mit #, ##, ### (diese werden automatisch im Inhaltsverzeichnis übernommen)
+2. Chunks eindeutig benennen, damit diese schneller gefunden werden.
+3. Nicht immer ist eine Grafik/Visualisierung sinnvoll und zielführend: nur dann, wenn wirklich wichtig.
+4. Kommentierungen im Code immer dann, wenn die Schritte nachvollziehbar gemacht werden: also nicht in jeder Zeile, vor allem wenn der Code quasi reproduziert wird.
+5. [Anleitung](https://rmarkdown.rstudio.com/) für gute RMarkdown-Dokumente. Besonders elegant ist es, wenn Sie die berechneten Werte direkt in die Beschreibung übernehmen.
+6. Abgabe auf Moodle in einer Zip-Datei als RMarkdown-Dokument, gemeinsam mit den Original-Dateien der Edge- und Nodelist und dem Codebuch sowie dem Link auf das Github-Verzeichnis, in dem alle Daten liegen.
+
+
+__Abstract und Keywords__
+Wir analysieren die Beziehungsnetzwerke innerhalb eines gerichteten, gewichteten, two-mode Netzwerks von fünf Sportinfluencer:innen aus Deutschland. Die Beziehungsdimensionen umfassen bezahlte Kooperationen auf Instagram und Youtube, sowie private Beziehungen, journalistische Produkte und Verbindungen zwischen Organisationen. Erhoben haben wir die Anzeigen und Verlinkungen auf Marken oder andere Personen in Posts auf Instagram und in YouTube-Videos im Jahr 2020. Die Gewichtung beschreibt die Häufigkeit der Kooperationen und Erwähnungen. Die Analyse zeigt, dass die fünf auserwählten Sportler*innen nicht direkt miteinander verbunden sind, immer nur über eine andere Person oder über eine Marke. Unseren Schwerpunkt legen wir auf die aktuelle Corona-Situation und ob diese die Kooperationen zwischen den Influencer:innen, aber auch die Häufigkeit der Werbung für Marken und Organisationen beeinflusst 
+
+Keywords: Netzwerkanalyse, Sport-Influencer, Kooperationen, Soziale Medien, Influencer Relations, Influencer Marketing
+
+
+
+# Einleitung
+Der Fitness-Hype war im Jahr 2020 so groß wie nie zuvor: Vor allem Fitness-Influencer:innen haben seit Beginn der Corona-Pandemie in den sozialen Medien stark an Bedeutung und Reichweite gewonnen. Obwohl, oder gerade weil die Fitnessstudios und Sportvereine die meiste Zeit geschlossen waren, stieg das Bedürfnis der Menschen nach Bewegung und der Bedarf an Home-Workouts. Davon profitierten wiederum Fitness-Influencer:innen, die auf ihren Youtube und Instagram Accounts ebensolche veröffentlichen. So hat sich zum Beispiel die Followerzahl des Youtube-Accounts von Pamela Reif, der erfolgreichsten Fitness-Influencerin Deutschlands, im März und April 2020 verdreifacht und lag Anfang Mai bei 3,1 Millionen (Gajek, 2020).
+Wir untersuchen mit einer Netzwerkanalyse das Umfeld besonders erfolgreicher, deutscher Fitness-Influencer:innen. Dabei interessiert und besonders, ob und wie diese untereinander vernetzt sind, und mit welchen Kooperationen sie ihren Erfolg sichern und weiter ausbauen. Für das Netzwerk sollten die Fitness-Influencer:innen folgende Kriterien erfüllen: Sie müssen (a) aktiv auf Instagram und Youtube Sport-Content posten, (b) mindestens 450.000 Follower auf Instagram haben und somit min. Macro-Influencer sein, (c) ihre Bekanntheit hauptsächlich durch Sport erreicht haben, (d) überwiegend Krafttraining oder Athletik betreiben, (e) in Deutschland wohnen und (f) aktiv Werbeanzeigen posten. So wurden für die Netzwerkanalyse diese fünf Fitness:influencerinnen ausgesucht:
+
+- Pamela Reif (aktuell ca. 7,5 Millionen Instagram Follower)
+- Alicia Schmidt (ca. 1,7 Millionen Instagram Follower)
+- Lisa Del Piero (ca. 840.000 Instagram Follower)
+- Evelina Mamajeva (ca. 543.000 Instagram Follower)
+- Tim Gabel (ca. 485.000 Instagram Follower). 
+
+Alle der ausgewählten Influencer:innen können als sogenannte Macro-Influencer bezeichnet werden, da sie über 50.000 Follower haben (Funke, 2019). Pamela Reif und Alicia Schmidt zählen sogar zu den Mega-Influencerinnen, da ihre Communities aus mehr als einer Millionen Follower besteht (ebd.). Für das Netzwerk wurden die Instagram- und Youtube-Accounts der Influencer:innen im gesamten Jahr 2020 untersucht und die Werbung, welche diese schalteten, analysiert. Darunter fallen auch Zweitkanäle der Influencer:innen. Die in den Posts erwähnten und markierten Personen und Marken wurden dabei in unterschiedliche Kategorien, wie z.B. “sport”, “beauty” und “fashion”, unterteilt. Auf der Beziehungsebene interessiert uns, ob die Kooperationen der Influencer:innen mit den erwähnten Personen rein geschäftlich waren, oder ob sie auch eine private Verbindung zueinander haben.
+
+
+
+# Vorarbeiten und vergleichbare Studien
+## Forschungsstand
+Die Grundlagen zu der sozialen Netzwerkanalyse im Bereich Sport erhielten wir durch die Lektüre "Social network analysis in sport research: an emerging paradigm" (Wäsche et al., 2017).
+Eine vergleichbare Studie haben wir in folgender recherchiert: https://www.webspotting.de/e-commerce/multi-channel-analyse-gymshark/. Hier wird die Sport-Fashion Marke GymShark analysiert. 
+Eine weitere vergleichbare Studie zu der Vernetzung von Influencer:innen fanden wir in "Die Vernetzung von Influencern – eine Analyse der deutschen YouTube-Szene." (Ziewiecki, S., & Schwemmer, C., 2019).
+
+
+
+## Arbeitshypothesen
+a) Wir gehen davon aus, dass alle fünf Influencer:innen in unserem Netzwerk direkt oder indirekt, also über ein- bis zwei Knoten, miteinander verbunden sind.
+b) Wir vermuten, dass der oder die Influencer:in mit den meisten Followern auf Instagram auch über die meisten Kooperationen verfügt. Aus diesem Grund müsste Pamela Reif als Influencerin mit den meisten Followern auf Instagram (7,5 Mio Abonnenten) auch die meisten Kooperationen haben, während Tim Gabel mit den wenigsten Followern (484k Abonnenten) am wenigsten mit Marken, Organisationen oder anderen Personen kooperieren müsste.
+c) Wir glauben, dass der Knoten mit dem höchsten Betweenness-Wert eine Marke sein wird. Denn der Akteur mit dem höchsten Betweenness-Wert hat die meisten Verbindungen zu anderen Akteuren und wir denken, dass eine Marke die Brücke zwischen den Influencer*innen darstellt. 
+d) Wir gehen davon aus, dass fünf Cluster um die fünf jeweiligen Influencer:innen entstehen werden. 
+e) Wir vermuten, dass die Influencer:innen ab März 2020 mehr Werbung geschalten haben als im Januar oder Februar 2020, da der Lockdown aufgrund des Coronavirus ab dem 20. März losging. Da die Menschen ab dann zu Hause bleiben mussten, gehen wir von einem Anstieg der Rezipient:innen von Home-Workouts der Influencer:innen aus. Damit ist unserer Meinung nach auch eine höhere Werbe-Frequenz verbunden.
+
+
+
+# Datenerhebung: Zugang, Bereinigung und Codebuch
+## Datenzugang
+ 
+ 
+
+## Bereinigung des Datensatzes
+
+[Github](https://github.com/Carla-Benzing/Gymfluencer/tree/main) verfügbar.
+
+
+
+## Codebuch
+Das [Codebuch](https://github.com/Carla-Benzing/Gymfluencer/blob/main/Codebuch%20Gymfluencer.Rmd) beschreibt die Variablen, Relationen und Gewichte des Netzwerks und ist ebenfalls auf Github hinterlegt.
+
+
+
+# Analyse und Interpretation
+## Das Gesamtnetzwerk
+
+```{r Gesamnetzwerk erstellen, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
+
+library(igraph)
+
+# Einlesen der Edge- und Nodelist
+el <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Edgelist.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Nodelist.csv", header=T, as.is=T, sep = ",")
+
+# Matrix erstellen
+edgematrix <-as.matrix(el)
+
+# Zusammenführen von Edge- und Nodelist als igraph-Objekt gym
+gym <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=T)
+gym
+
+```
+
+
+### Beschreibung des Netzwerks
+```{r Beschreibung des Netzwerks, message=FALSE, warning=FALSE, paged.print=TRUE}
+# Parameter zu Beschreibung des Netzwerks
+
+## ist das Netzwerk bereits vereinfacht?
+is.simple(gym)
+# false
+
+## besteht das Netzwerk aus Komponenten?
+## wenn ja, wie vielen?
+is.connected(gym)
+components(gym)
+# Es gibt eine Komponente
+
+## Dichte des Netzwerks
+edge_density(gym, loops=FALSE)
+# Die Dichte beträgt 0.009816754. Das bedeutet, dass 0,10% aller möglichen Beziehungen realisiert worden sind. 
+
+mean_distance(gym)
+# berechnet	den	durchschnittlich	kürzesten	Weg	zwischen	zwei	Knoten	und	dessen Verbindungsschritte
+# 4.101168
+
+## Umfang des Netzwerks
+diameter(gym)
+# Der Umfang des Netzwerks ist 24
+
+## Pfaddistanzen (Distance)
+farthest_vertices(gym)
+# Die	Pfaddistanz	zeigt	an,	wie	lange	es	in	einem	Netzwerk	dauert,	bis	eine	Information	von	einem	Knoten	zum	nächsten	Knoten	kommt.
+# 24
+
+reciprocity(gym)
+#  0.7833333 reziproke Beziehungen
+
+```
+
+
+### Netzwerk vereinfachen
+```{r Einfache Visualisierung des erstellten Objekt, fig.height=10, fig.width=14, message=TRUE, warning=TRUE, paged.print=TRUE}
+
+# Pro-Tipp: die Ausgabe jedes "chunks" lässt sich über das Rädchen direkt unter der Chunk-Beschreibung einstellen. Hier habe ich die Bildfläche auf 10 auf 16 Inches eingestellt, d.h. das Netzwerk wird automatisch auf eine Fläche von 10 auf 16 Inches geplottet. Für den Anfang empfehle ich immer bei Netzwerken bis 50 Knoten mit dem Kamada-Kawai Algorithmus zu arbeiten, weil hier die Knoten immer an die gleiche Position gesetzt werden und wir dadurch Abweichungen besser erkennen können.
+
+el <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Edgelist.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Nodelist.csv", header=T, as.is=T, sep = ",")
+
+
+# Matrix erstellen
+edgematrix <-as.matrix(el)
+
+# ZusammenfÃ¼hren von Edge- und Nodelist als igraph-Objekt
+
+gym <- graph_from_data_frame(d=edgematrix, directed=T)
+gym
+
+E(gym)$arrow.size <- .3
+
+gym
+
+
+# Einfache Abbildung erstellen
+plot(gym,
+     asp=0,
+     vertex.size=5,
+     vertex.frame.color=NA,
+     edge.color="darkgrey",
+     edge.arrow.size=.3,
+     edge.curved=curve_multiple(gym),
+     main="Gymfluencer Gesamtnetzwerk",
+     layout=layout_with_dh(gym))
+
+```
+
+
+## Vereinfachte Visualisierung
+
+```{r}
+library(tidyverse)
+library(igraph)
+knitr::opts_chunk$set(echo = FALSE)
+
+# Einlesen der Edge- und Nodelist
+el <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Edgelist.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Nodelist.csv", header=T, as.is=T, sep = ",")
+
+# Matrix erstellen
+edgematrix <-as.matrix(el)
+
+# Zusammenführen von Edge- und Nodelist als igraph-Objekt
+
+gym <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=T)
+gym
+
+```
+
+```{r Visualisierung, fig.height=8, fig.width=12}
+
+# Attribute zur schöneren Visualisierung festlegen und Gesamtnetzwerk erstellen
+
+V(gym)[V(gym)$type == 1]$shape <- "circle"
+V(gym)[V(gym)$type == 2]$shape <- "square"
+V(gym)[V(gym)$type == 3]$shape <- "circle"
+
+V(gym)[V(gym)$cooperation == "fitness"]$color <- "firebrick"
+V(gym)[V(gym)$cooperation == "sport"]$color <- "firebrick"
+
+V(gym)[V(gym)$cooperation == "music"]$color <- "lightpink"
+V(gym)[V(gym)$cooperation == "sound"]$color <- "lightpink"
+
+V(gym)[V(gym)$cooperation == "bro"]$color <- "brown"
+V(gym)[V(gym)$cooperation == "dog"]$color <- "brown"
+
+V(gym)[V(gym)$cooperation == "beauty"]$color <- "goldenrod"
+V(gym)[V(gym)$cooperation == "fashion"]$color <- "goldenrod"
+V(gym)[V(gym)$cooperation == "style"]$color <- "goldenrod"
+V(gym)[V(gym)$cooperation == "life"]$color <- "goldenrod"
+V(gym)[V(gym)$cooperation == "erotik"]$color <- "goldenrod"
+V(gym)[V(gym)$cooperation == "fun"]$color <- "goldenrod"
+
+
+V(gym)[V(gym)$cooperation == "car"]$color <- "aquamarine1"
+V(gym)[V(gym)$cooperation == "travel"]$color <- "aquamarine1"
+
+V(gym)[V(gym)$cooperation == "house"]$color <- "purple1"
+V(gym)[V(gym)$cooperation == "food"]$color <- "purple1"
+
+
+V(gym)[V(gym)$cooperation == "volunteer"]$color <- "grey"
+V(gym)[V(gym)$cooperation == "work"]$color <- "grey"
+V(gym)[V(gym)$cooperation == "politic"]$color <- "grey"
+V(gym)[V(gym)$cooperation == "communication"]$color <- "grey"
+V(gym)[V(gym)$cooperation == "education"]$color <- "grey"
+
+
+plot(gym,
+     asp=0,
+     vertex.size=.5,
+     vertex.frame.color=NA,
+     vertex.label=NA,
+     edge.color="darkgrey",
+     edge.arrow.size=.3,
+     edge.curved=curve_multiple(gym),
+     edge.width=E(gym)$weight,
+     main="Gymfluencer vereinfachtes Netzwerk",
+     layout=layout_with_dh(gym))
+
+```
+
+
+
+## Analyse: Komponenten, Cluster und Cliquen
+Die Analyse hat Teilnetzwerke nach spezifischen Kriterien generiert. Jedes Netzwerk verfügt aber auch über spezielle Eigenarten, wenn sich Knoten nach bestimmten Kriterien zusammenfinden. 
+
+Auf der Ebene des Netzwerks sind die Komponenten: Wenn keine isolierten Knoten existieren und alle Knoten in einem Hauptnetzwerk verbunden sind, dann liegt ein Netzwerk mit einer Komponente vor. Die Prüfung erfolgt mit dem Befehl is_connected(g). Achtung: manche Berechnungen von Netzwerkmaßen sind nur bei Netzwerken möglich, die aus einer Komponente bestehen. 
+
+
+### Komponenten analysieren
+
+__Starke und schwache Komponenten__
+Netzwerke lassen sich in starke und schwache Komponenten analysieren. Dazu prüft man zunächst, ob es sich um eine Komponente handelt und zerlegt diese dann in eine starke und schwache Komponente. Stark bedeutet hier, dass es sich um einen Teilcommunities mit einer höheren Dichte handelt.
+
+```{r Starke und schwache Komponenten analysieren}
+# Unteranalyse der Hauptkomponente
+is_connected(gym)
+#true
+
+# Analyse der Verteilung der Komponenenten
+components(gym, mode = c("weak", "strong"))
+
+# Analyse der starken Komponenten
+components(gym, mode = "strong")
+
+# Anzahl der Komponenten
+count_components(gym)
+
+# Aufteilung der Komponenten
+comp_gym <- components(gym)
+groups(comp_gym)
+
+```
+
+Mit der Visualisierung sehen wir, dass alle Akteure in unserem Influencer:innen-Netzwerk zu einer großen Komponente gehören. Darunter sind 67 schwache Komponenten, das heißt Komponenten mit einer schwachen Dichte. Da unser Netzwerk aus einer einzigen Komponente besteht, können wir diese nicht weiter zerlegen und analysieren.
+
+
+### Communities berechnen
+Für die Berechnung von *communities* werden automatisch nach dichten Untergruppen im Netzwerk gesucht. Die Annahme ist, dass eine hohe Dichte zwischen Knoten für viel Austausch oder Kontakt steht und dies eine Gemeinschaft (community) innerhalb des Netzwerks definiert, die sich von anderen abgrenzen lässt.
+
+```{r Communities erstellen}
+# Anzahl der Clusters
+clusters(gym)
+
+# Komponenten auftrennen
+gym_comp <- decompose.graph(gym)
+gym_comp
+
+# Komponenten neu benennen
+gym_comp1 <- gym_comp[[1]]
+
+
+# Berechnung der Cluster innerhalb der Komponente
+# erstellt die Berechnung für die Modularität und deren Teilgruppen
+cl <- cluster_walktrap(gym_comp1)
+modularity(cl)
+membership(cl)
+
+# Clusterberechnung
+plot(gym_comp1,
+     edge.arrow.size=.3,
+     vertex.color="grey75",
+     vertex.frame.color=NA,
+     main="Komponente 1 (via communities)"
+
+# Berechnung der Cluster innerhalb der Komponente
+
+# Was macht der communities Befehl?
+?communities()
+
+# Wir verwenden die oben erstellte Aufteilung der Cluster
+membership(cl)
+
+# mit dem Befehl sizes wird die Größe der jeweiligen Communities angezeigt
+sizes(cl)
+
+# und communities() liefert eine Zuordnung der jeweiligen Knoten auf die Communities
+communities(cl)
+
+# Achtung: das sind keine igraph-Objekte, sondern nur die Angaben der Knoten. 
+```
+
+### Cluster
+Innerhalb von Komponenten lassen sich verschiedne Teilcluster berechnen. Wir verwenden dafür die Hauptkomponente und berechnen Cluster innerhalb der Komponente. Der *cluster_walktrap(g)* Befehl berechnet die Cluster anhand der kürzesten Pfade und einem statistischen Vergleich zwischen den Clustern. Der Vorteil dieser Methode ist, dass die Ausgabe des Plots die Cluster gleich farbig zuteilt (diese Zuweisung ist beliebig und kann nicht verändert werden). Für die Berechnung werden Teilbeziehungen der Unternetzwerke zueinander in Verhältnis gesetzt, die Visualisierung verbindet diese wieder in einer Gesamtdarstellung. 
+
+```{r Prüfung verbundener Cluster}
+# Anzahl der Clusters
+clusters(gym)
+
+# Sind die Cluster miteinander verbunden?
+is_connected(gym)
+```
+
+Die Analyse zeigt: das Netzwerk besteht aus einem großen Cluster, denn alle Knoten sind miteinander verbunden.
+
+```{r}
+# Erstellung des Clusters des Gesamtnetzwerks
+gymc	<-	cluster_walktrap(gym)
+plot(gymc, gym,
+     asp=0,
+     vertex.size=5,
+     vertex.frame.color=NA,
+     edge.color="darkgrey",
+     edge.arrow.size=.3,
+     edge.curved=curve_multiple(gym),
+     main="Gymfluencer Cluster",
+     layout=layout_with_dh(gym)
+     )
+```
+
+Ein Cluster berechnet	die statistische	Dichte	von zusammengehörenden	Untergruppen	(short	walks	=	kurze	Abstände)	eines	Gesamtnetzwerks	und	färbt	diese	entsprechend	ein.
+
+
+### Dyaden und Reziprozität
+
+Dyaden sind wichtige Bausteine für Netzwerke. Bei gerichteten Netzwerken lässt sich hier das Maß der Reziprozität berechnen.
+
+```{r Dyadenzenus vereinfachtes Gesamtnetzwerk, fig.height=6, fig.width=10, message=FALSE, warning=FALSE, paged.print=TRUE}
+
+# Durchführung des Dyadenzensus
+dyad_census(gym)
+
+# Ausgabe der dyadischen Beziehungen nach dem MAN-Schema
+# M = Mutal (reziprok)
+# A = Asymmetrical (einseitig gerichtet)
+# N = Null (keine Beziehung)
+
+# Berechnung der Reziprozität
+reciprocity(gym, mode="ratio")
+# Der berechnete Wert gibt das Verhältnis von reziproken Beziehungen zu normalen Beziehungen an, in diesem Fall sind 26,08% der Beziehungen im Netzwerk reziprok.
+
+# Genauere Analyse der reziproken Beziehungen
+# Der Befehl which_mutual gibt genau an, bei welchen Knoten es sich um eine reziproke Beziehung handelt.
+
+m <- which_mutual(gym, es= E(gym))
+m
+
+# Wir schreiben jetzt die Werte als Edge-Attribute in die Edgelist
+E(gym)$reciprocity <- m
+edge.attributes(gym)
+
+# Wir müssen jetzt noch die Werte der Edge-Attribute in der Spalte "reciprocity" in logische Operatoren umwandeln:
+
+E(gym)$reciprocity  <- as.numeric(E(gym)$reciprocity)
+edge.attributes(gym)$reciprocity
+
+# Plot der reziproken Beziehungen
+plot(gym, 
+     asp=0,
+     layout=layout_with_dh(gym),
+     edge.arrow.mode=3,
+     edge.arror.size=.2,
+     edge.curved=.2,
+     edge.curved=curve_multiple(gym),
+     vertex.color=NA,
+     vertex.frame.color=NA,
+     #edge.width=E(gym)$weight/2, 
+     edge.color=c("red", "NA")[(E(gym)$reciprocity=="0")+1],
+     main="Geamtnetzwerk", 
+     sub="Reziproke Beziehungen in rot"
+     )
+
+```
+
+__Dyaden: Vergleich zweier Teilnetzwerke auf Reziprozität__
+
+```{r Dyadenzensus: Vergleich zweier Netzwerke}
+
+list.edge.attributes(gym)
+
+work <- subgraph.edges(gym, E(gym)[relation==1]) 
+work 
+
+private <- subgraph.edges(gym, E(gym)[relation==2])
+private 
+
+# Wir wollen herausfinden, ob die Reziprozität bei dem Hilfs- oder Zusammenarbeitsnetzwerk höher ist. Dazu müssen wir mit den zuvor erstellten Teilnetzwerken arbeiten und diese vergleichen. Hierzu passen wir die Skripte aus Kapitel 4a einfach für die beiden Teilnetzwerke an.
+
+# A Teilnetzwerk work (Hilfestellung)
+
+# Durchführung des Dyadenzensus
+dyad_census(work)
+
+# Ausgabe der dyadischen Beziehungen nach dem MAN-Schema
+# M = Mutal (reziprok)
+# A = Asymmetrical (einseitig gerichtet)
+# N = Null (keine Beziehung)
+
+# Berechnung der Reziprozität
+reciprocity(work, mode="ratio")
+# Der berechnete Wert gibt das Verhältnis von reziproken Beziehungen zu normalen Beziehungen an, in diesem Fall sind 26,08% der Beziehungen im Netzwerk reziprok.
+
+# Genauere Analyse der reziproken Beziehungen
+# Der Befehl which_mutual gibt genau an, bei welchen Knoten es sich um eine reziproke Beziehung handelt.
+
+mwork <- which_mutual(work, es = E(work))
+mwork
+
+# Wir schreiben jetzt die Werte als Edge-Attribute in die Edgelist
+E(work)$reciprocity <- mwork
+
+# Wir müssen jetzt noch die Werte der Edge-Attribute in der Spalte "reciprocity" in logische Operatoren umwandeln:
+E(work)$reciprocity  <- as.numeric(E(work)$reciprocity)
+
+# B Teilnetzwerk work (Zusammenarbeit)
+
+# Durchführung des Dyadenzensus
+dyad_census(private)
+
+# Berechnung der Reziprozität
+reciprocity(private, mode="ratio")
+mprivate <- which_mutual(private, es = E(private))
+mprivate
+
+# Wir schreiben jetzt die Werte als Edge-Attribute in die Edgelist
+E(private)$reciprocity <- mprivate
+E(private)$reciprocity  <- as.numeric(E(private)$reciprocity)
+
+
+# direkter Vergleich der Reziprozität der beiden Teilnetzwerke visualisieren
+par(mfrow=c(1,2), mar=c(0,0,2,0))
+
+plot(work, 
+     layout = layout_in_circle, 
+     edge.arrow.size=0.4,
+     vertex.color=NA,
+     edge.width=E(work)$weight, 
+     edge.color=c("red", "NA")[(E(work)$reciprocity=="0")+1],
+     main="professionelles Netzwerk (....%reziprok)", 
+     sub="Reziproke Beziehungen in rot"
+     )
+
+plot(private, 
+     layout = layout_in_circle, 
+     edge.arrow.size=0.4,
+     vertex.color=NA,
+     edge.width=E(private)$weight, 
+     edge.color=c("red", "NA")[(E(private)$reciprocity=="0")+1],
+     main="privates Netzwerk (...% reziprok)", 
+     sub="Reziproke Beziehungen in rot"
+     )
+
+par(mfrow=c(1,1), mar=c(0,0,2,0))
+
+# Die Analyse zeigt, dass die Beziehungen im Zusammenarbeitsnetzwerk doppelt so häufig reziprok sind, wie die Beziehungen in der Ratsuche. 
+
+```
+
+
+### Triaden
+
+__Triadenzensus__
+Der Triadenzensus ist ein etabliertes Instrument, um die Zusammensetzung von Netzwerken zu analysieren und zu vergleichen.
+
+```{r Triadenzensus allgemein}
+
+#  Der Zensus folgt dabei dem abgewandelten M-A-N Schema in der Beschreibung und liefert die Ergebnisse von 16 Triadentypen:
+
+# Die Reihenfolge der Ausgabe lässt sich über den Befehl ?triad_census festlegen.
+?triad_census
+# Hier werden 16 Triadentypen numerisch aufsteigend abgetragen.
+
+# Übersicht über Triaden in einem Netzwerk
+triad_census(gym)
+
+```
+
+```{r Triadenstrukturen / Motifs}
+
+# Mit dem Befehl motifs lassen sich spezifische Triadentypen anzeigen:
+# Das numerische Argument legt fest, wie viele Verbindungen untersucht werden sollen.
+
+motifs(gym, size=3)
+count_motifs(gym, size=3)
+
+# Die Anzahl der unterschiedlichen motifs entspricht grob dem Triadenzensus.
+# Der Gesamtwert gibt alle triadischen Verbindungen in einem Netzwerk an.
+
+```
+
+In dem Netzwerk gym sind 3592 triadische Beziehungen angelegt. Achtung: die Anzahl der Cliquen unterscheidet sich in den Teilnetzwerken!
+
+
+### Cliquen
+Cliquen entsprechen der Triade 300, d.h. einer komplett reziproken Struktur (A<->B<->C,A<->C).
+
+
+```{r Kapitel 5c: Triadenstruktur: Cliquen}
+
+# Zählt die Cliquen im Netzwerk
+clique_num(gym)
+
+# listet die Cliquen im Netzwerk auf
+lc <- largest_cliques(gym)
+lc
+
+# Umwandlung für Visualisierung
+V(gym)$label <- V(gym)$name
+gym_lc <- subgraph(gym, lc[[1]])
+
+plot(gym_lc, 
+     layout=layout.fruchterman.reingold, 
+     vertex.color="gold", 
+     edge.arrow.size = 0.5, 
+     edge.color = "gray80",
+     main = "Größte Clique im CR/PR Netzwerk")
+```
+
+
+
+## Erklärungsmuster: Reziprozität, Transitivität, Homophilie
+
+Für die Struktur von Netzwerken liegen einige Erklärungsmuster vor, dazu gehören Reziprozität, Transitivität und Homophilie.
+
+Reziprozität ist die gegenseitige Anerkennung in Netzwerken, d.h. dass Knoten (in gerichteten Netzwerken) gegenseitig gegenseitig verbunden sind. Transitivität beschreibt die Möglichkeit, dass zwischen Knoten eine Weitergabe stattfindet während Homophilie die Ähnlichkeit von Knoten betont. 
+
+
+### Reziprozität
+Für die Berechnung der Reziprozität im Netzwerk verwenden wir das vereinfachte Gesamtnetzwerk.
+
+```{r Reziprozität}
+??reciprocity
+reciprocity(gym)
+
+```
+
+Die Reziprozität im Netzwerk im Gesamtnetzwerk wird mit 43,18% berechnet. Das ist naheliegend, da das Forschungsdesign mit den Fragen der Zusammenarbeit und Ratsache per se reziproke Netzwerke bevorzugt. Als Kontrolle untersuchen wir die beiden Teilnetzwerke Ratsuche und Zusammenarbeit. Das Netzwerk der Zusammenarbeit hat die höchste ausgeprägte Reziprozität von 47,36%. Das ist naheliegend, da die Wahl der Teams häufig durch gegenseitige Sympathie bzw. vorherige Erfahrungen geprägt sind. Hingegen ist die Ratsuche deutlich einseitiger ausgeprägt mit 26,31% von reziproken Beziehungen. Auch dies erscheint aufgrund der Fragestellung naheliegend zu sein, denn die Ratsuche verläuft in den wenigsten Fällen tatsächlich reziprok (vgl. z.B. mit dem Konzept der Meinungsführer).
+
+### Transitivität
+Transitivität ist eng mit Triaden oder "Tripletts" verbunden (vgl. z.B. Hummel & Sodeur 2010). 
+
+```{r Transitivität}
+??transitivity
+transitivity(gym)
+
+```
+Bei der Transitivität unterscheidet sich das Bild etwas: vor allem in den Teilnetzwerken liegt eine Transitivität mit jeweils 27% bei einem Viertel der Beziehungen vor. Das bedeutet, dass hier eine triadische Struktur vorliegt, bei der Inhalte weitergegeben werden. 
+
+### Homophilie
+Die Homophilie untersucht die Strukturähnlichkeit von Knoten in Netzwerken.
+
+```{r Homophilie}
+# igraph verwendet zur Berechnung von Homophilie den Wert Assortivität: Dieser Wert gilt als positiv, wenn sich ähnliche Knoten (aufgrund deren Eigenschaften) miteinander verbinden. Ansonsten wird der Wert negativ berechnet.
+??assortativity
+list.vertex.attributes(gym)
+
+# Assortivität im Hauptnetzwerk
+assortativity_nominal(gym, V(s)$sex, directed=TRUE)
+assortativity_nominal(gym, V(s)$cooperation, directed=TRUE)
+assortativity_nominal(gym, V(s)$type, directed=TRUE)
+
+```
+
+Die Werte im Hauptnetzwerk nach Vertex-Attributen liegen alle unter 50%, so dass hier keine Form von Homophilie festgestellt werden kann. Das gilt auch für die Teilnetzwerke Ratsuche und Zusammenarbeit. Gerade bei Zusammenarbeit wäre eine Homophilie zu vermuten gewesen. 
+
+
+
+## Zentralitätsmaße
+Der erste Überblick zeigt, dass das Netzwerk schnell unübersichtlich wird, weil hier vier Beziehungsarten (Kooperation, Privat, jounalistische Produkte und Verbrindungen zwischen Organisationen) mit zum Teil mehreren Gewichten in einer Abbildung dargestellt werden.
+Wir berechnen zuerst die Zentralitätsmaße, um das Netzwerk anschließend anhand dieser ergebnisse vereinfacht darstellen zu können. 
+
+```{r Zentralitätsmaße: vereinfachte Netzwerke, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+# Netzwerk einlesen und vereinfachen für Analyse
+library(igraph)
+el <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Edgelist.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Nodelist.csv", header=T, as.is=T, sep = ",")
+edgematrix <-as.matrix(el)
+gym <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=T)
+gym
+```
+
+
+### Degree
+
+__Degree-Werte allgemein__
+Analyse des Knotens mit den häufigsten starken Beziehungen: 
+
+```{r Zentralität: Degree-Werte allgemein}
+
+# Knoten mit den stärksten Beziehungen im Gesamtnetzwerk
+degree(gym, mode="all")
+which.max(degree(gym, mode="all"))
+# Pamela Reif (Knoten 1) hat mit einem Wert von 91 den höchsten Degree.
+
+# Berechnung des Indegree-Werts normalisiert
+ins <- degree(gym, mode = "in", normalized = TRUE)
+# legt die Farbskala fest
+palette = colorRampPalette(c('lightblue','blue'))
+
+# die Palette wird in 10 Schritte unterteilt.
+fine = 20
+graphCol = palette(fine)[as.numeric(cut(ins, breaks = fine))] 
+
+plot(gym,
+     asp=0,
+     vertex.frame.color=NA,
+     vertex.size=degree(gym),
+     vertex.color=graphCol,
+     edge.color="darkgrey",
+     edge.arrow.size=.3,
+     # vertex.label=NA,
+     edge.curved=curve_multiple(gym),
+     main="Gymfluencer Gesamtnetzwerk",
+     layout=layout_with_dh(gym))
+
+```
+
+Die absoluten Zahlen sind allerdings nur begrenzt aussagekräftig: Deshalb lässt sich der Degree-Wert leicht normalisieren, d.h. als Prozentwert darstellen. Deshalb werden wir folgend nur noch mit den prozentualen Werten arbeiten. Diese Methode nennt sich Normalisierung und berechnet den Degree-Wert eines Knotens im Verhältnis zu allen anderen Knoten. Damit erreicht man eine genauere Aussage als mit einem reinen numerischen Wert. Dafür wird der Befehl um das Argument normalized = TRUE ergänzt.
+
+```{r Zentralität: Degree-Werte zentralisiert}
+
+# Knoten mit den stärksten Beziehungen im Gesamtnetzwerk
+degree(gym, mode="all", normalized = TRUE)
+which.max(degree(gym, mode="all"))
+
+
+```
+
+Degree-Wert:
+Knoten 1 (Pamela Reif) hat 47,6% aller Degree-Werte. 
+(Alle Knoten mit nur einer Verbindung haben den niedrigsten Degree-Wert mit 0,09% 
+Mit den normalisierten, d.h. ins Verhältnis gesetzten Zahlen lassen sich viel genauere Aussagen über die positionalen Maße treffen.)
+
+__Indegree als Popularitätsmaß__
+Das Zentralitätsmaß Indegree wird häufig als Popularitätsmaß interpretiert.
+
+```{r Zentralität: Indegree als Popularitätsmaß}
+
+# Gesamtnetzwerk
+# zeigt die normalisierte Indegree-Verteilung im Gesamtnetzwerk
+degree(gym, mode="in", normalized = TRUE)
+# liefert den Knoten mit der höchsten Anzahl von starken Beziehungen
+which.max(degree(gym, mode="in"))
+
+```
+
+__Wer ist besonders beliebt im Netzwerk?__
+Der Indegree beschreibt die Anzahl	der	Kanten,	die	auf	einen	Knoten	eingehen.	Es ist ein Maß	für	Popularität. In diesem Beispiel des Netzwerk sind zum einen die EGOs davon betroffen, da die Beziehungen in Richtung der EGOs gerichtet sind und zum anderen sind die Schwesterfirmen betroffen, da auf sie ebenfalls eine Verbindung eingeht.
+Den höchsten Indegree-Wert hat Knoten 48 (Evelina).
+Den niedrigsten Indegree-Wert der fünf EGOs hat Knoten 108 (Lisa Del Piero). Das bedeutet, dass sie im Jahr 2020 von den fünf untersuchten Influencer*innen am wenigsten Kooperationen gemacht hat.
+
+Outdegree
+```{r}
+degree(gym, mode="out")
+centr_degree(gym, mode="out", normalized=T)
+```
+
+Der Outdegree beschreibt die Anzahl	der	Kanten,	die	ein	Knoten	zu	anderen	Knoten	hat. Hierbei kann man feststellen, welche Unternehmen mehrere der untersuchten EGOs gesponsort haben. Darunter fallen zum Besipiel Puma, Gymshark und Sante Naturcosmetics und außerdem eine natürliche Person (Emilia Bte), da sie auf zwei Profilen der EGOs aufgetaucht ist. Olakala, gymsharktrain, gymsharkwomen und douglascosmetics haben beispielsweise ebenfalls einen Outdegree von 2, da sie mit weiteren Unternehmen, wie Mutter- oder Schwesterfirmen, in Verbindung stehen. Dies spielt alllerdings für die EGO-Kooperation keine Rolle.
+
+
+### Betweeness und Broker im Netzwerk
+Der Zentralitätswert "Betweenness" zeigt, wie relevant einzelne Knoten für die Vernetzung zu anderen Knoten sind. Es geht also um Brücken oder Broker, die zwischen den einzelnen Netzwerken verbinden können. 
+
+```{r Zentralität: Betweenness als Broker, fig.height=10, fig.width=16, message=FALSE, warning=FALSE, paged.print=FALSE}
+# andere edge list
+library(igraph)
+el <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Edgelist%20Betweenness.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Nodelist.csv", header=T, as.is=T, sep = ",")
+edgematrix <-as.matrix(el)
+gym1 <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=T)
+gym1
+# Gesamtnetzwerk 
+
+betweenness(gym1)
+# liefert den Knoten mit der höchsten Anzahl von starken Beziehungen
+which.max(betweenness(gym1))
+# Exelina Mamajeva hat den höchsten Betweenness-Wert. 
+## Neben Gymshark liegt der Betweenness-Wert einzig bei Douglas nicht bei 0, da diese beiden Knoten Verbindungen zwischen den einzelnen Clustern darstellen. Gleichzeitig ist jeweils eine Verbindung zu ihnen gerichtet und mindest eine Verbindung geht von ihnen weg.
+
+
+# weist dem Broker im Gesamtnetzwerk eine Farbe zu
+V(gym1)[V(gym1)$name == "Evelina Mamajeva"]$color <- "red"
+V(gym1)[V(gym1)$name != "Evelina Mamajeva"]$color <- "gold"
+
+plot(gym1, 
+     asp=0,
+     layout=layout_with_dh,
+      edge.arrow.size=.4,
+     edge.color="gold",
+     vertex.frame.color=NA,
+     vertex.label.color="black",
+     edge.curved=.2,
+     vertex.size=5,
+     edge.curved=curve_multiple(gym1),
+     main="Broker im Netzwerk",
+     sub="vereinfachtes Hauptnetzwerk"
+     )
+
+
+```
+
+
+### Closeness
+
+```{r Zentralität: Closeness, fig.height=10, fig.width=16, message=FALSE, warning=FALSE, paged.print=FALSE}
+# Closeness 
+# Closeness ist ein Zentralitätmaß, das berechnet, welche Knoten eng miteinander verbunden sind. Das  Zentralitätsmaß kann nur bei Netzwerken eingesetzt werden, die nicht über mehrere Komponenten verfügen. Dies trifft auf unser Gesamtnetzwerk zu.
+
+# Netzwerk neu einlesen und Komponenten isolieren
+library(igraph)
+
+el <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Edgelist.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Nodelist.csv", header=T, as.is=T, sep = ",")
+
+edgematrix <-as.matrix(el)
+gym <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=T)
+gym
+
+# Closeness
+# Closness berechnet die relative Nähe zu anderen Knoten. Damit lässt sich interpretieren, welche Knoten im Netzwerk eine zentrale Rolle haben.
+
+cgym <- closeness(gym)
+cgym
+
+which.max(cgym)
+which.min(cgym)
+
+# weist den größten und kleinsten Werten eine Randfarbe zu
+V(gym)[V(gym)$name == "Douglas Cosmetics"]$color <- "red"
+V(gym)[V(gym)$name == "Pamela Reif"]$color <- "green"
+V(gym)[V(gym)$name == "Alicia Schmidt"]$color <- "green"
+V(gym)[V(gym)$name == "Evelina Mamajeva"]$color <- "green"
+V(gym)[V(gym)$name == "Tim Gabel"]$color <- "green"
+V(gym)[V(gym)$name == "Lisa Del Piero"]$color <- "green"
+
+plot(gym, layout=layout_with_dh,
+     asp=0,
+     edge.arrow.size=.4,
+     # edge.color="gold",
+     # vertex.color="gold",
+     vertex.frame.color=NA,
+     vertex.label.color="black",
+     edge.curved=.2,
+     edge.curved=curve_multiple(gym),
+     main="Gesamtnetzwerk",
+     sub="Closeness-Werte illustriert")
+
+```
+In der Hauptkomponente hat Knoten 58 mit einem Wert von 7,97% die höchste Closness-Zentralität, die niedrigste haben die EGOS mit 7,76%. Die EGOS haben den kleisten Closeness-Wert, da auf sie nur Verbindungen eingehen.
+
+
+### Spezialfall: Influencer (Bonus)
+Wenn es um einflussreiche Knoten in einem Netzwerk geht, gibt es ein Spezialpaket InfluenceR, das zusätzlich installiert werden kann. Damit wird es sehr einfach, einflussreiche Knoten auszulesen. Allerdings funktioniert das Paket nur bei ungerichteten Knoten, deshalb werden wir das Netzwerk neu erstellen. 
+
+```{r InfluencerR Paket: Analyse von einflussreichen Knoten, fig.height=8, fig.width=12, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+# Installation InfluenceR Programmbibliothek (nur, falls nötig)
+# install.packages("influenceR")
+
+library(igraph)
+library(influenceR)
+
+# Einlesen des Netzwerks als ungerichtetes Netzwerk und entsprechende Vereinfachung
+library(igraph)
+
+el <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Edgelist.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Nodelist.csv", header=T, as.is=T, sep = ",")
+
+edgematrix <-as.matrix(el)
+gym <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=FALSE)
+
+
+# Was macht die Programmbibliothek InfluenceR?
+??influenceR
+
+# Wir erhalten einige neue Funktionen hinzu:
+# 1. ens(g) berechnet den Zugang zu strukturellen Löchern in einem Netzwerk
+# 2. bridging(g) berechnet die Knoten, die es ermöglichen, schneller andere Knoten zu erreichen, sogenannte Brücken. (nach Valente)
+
+holes <- ens(gym)
+which.max(holes)
+# Pamela Reif
+which.min(holes)
+# ALNO kitchens
+holes
+
+bridges <- bridging(gym)
+which.max(bridges)
+which.min(bridges)
+bridges
+
+# weist den größten und kleinsten Werten eine Randfarbe zu
+V(gym)[V(gym)$name == "Pamela Reif"]$color <- "red"
+V(gym)[V(gym)$name == "ALNO kitchens"]$color <- "orange"
+
+V(gym)[V(gym)$name == "Puma"]$color <- "blue"
+V(gym)[V(gym)$name == "Porsche"]$color <- "light blue"
+
+
+plot(gym,
+     asp=0,
+     vertex.size=5,
+     # vertex.frame.color=NA,
+     edge.color="darkgrey",
+     edge.arrow.size=.3,
+     edge.curved=curve_multiple(gym),
+     main="Einflussreiche Knoten",
+     layout=layout_with_dh(gym))
+```
+
+Mit der Programmbibliothek InfluenceR ließen sich zwei weitere relevante Knoten isolieren, die für die Konfiguration des Netzwerks (im Falle eines ungerichteten Netzwerks) relevant sind: Knoten  48 ermöglicht es, sogenannte strukturelle Löcher im Netzwerk anzusprechen während Knoten 2 eine Brückenfunktion übernimmt.
+
+
+
+## Analyse der Teilnetzwerke 
+Für dieses Netzwerk sind besonders folgende Teilnetzwerke und dessen Vergleich interessant: 
+
+Edge-Attribute
+1) Beziehungsart (relation)
+2) Häufigkeit der Kooperation (weight)
+
+Node-Attribute
+4) Geschlecht (type und sex)
+5) Art der Kooperation (cooperation)
+
+Schwerpunkt unserer Forschungsarbeit 
+6) Erwähnungen in den verschiedenen Corona-Phasen und die Häufigkeit dieser Kooperationen (time und weight)
+
+
+### Teilnetzwerke nach Edge-Attributen
+
+*Beziehungsart der Akteure: privat / professionell*
+
+Das Gesamtnetzwerk wird nun in zwei Teilnetzwerke aufgeteilt. Uns interessieren nur die privaten und die professionellen Kooperationen unserer InfluencerInnen, deshalb werden diese selektiert und Journalistische Produkte, Verbindungen zwischen Organisationen/Akteuren (Schwesterfirmen) und vermutlich unbezahlte Erwähnungen/Anzeigen aussortiert.
+
+```{r Teilnetzwerke erstellen und vergleichen, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+list.edge.attributes(gym)
+
+work <- subgraph.edges(gym, E(gym)[relation==1]) 
+work #das Netzwerk hat noch 104 Kanten
+
+private <- subgraph.edges(gym, E(gym)[relation==2])
+private #das Netzwerk hat nur noch 25 Kanten
+
+
+# Vergleich der beiden Netzwerke
+par(mfrow=c(1,3), mar=c(2,0,2,0)) 
+
+plot(work, layout=layout_nicely,
+     edge.arrow.size=.2,
+     edge.color="blue",
+     edge.width=E(work)$weight,
+     vertex.color="grey75",
+     vertex.frame.color=NA,
+     main=" professionelle Kooperation",
+     sub="Teilnetzwerk")
+plot(private, layout=layout_nicely, 
+     edge.arrow.size=.2,
+     edge.color="green",
+     edge.width=E(private)$weight,
+     vertex.color="grey75",
+     vertex.frame.color=NA,
+     main="private Kooperation",
+     sub="Teilnetzwerk")
+
+# setzt die Darstellung wieder auf eine Abbildung zurück
+par(mfrow=c(1,1), mar=c(0,0,0,0))
+
+```
+
+Man kann sehr gut erkennen, das in dem Netzwerk der InfluencerInnen überwiegend professionelle Kooperationen bestehen.
+
+
+*Teilnetzwerke nach Gewichtung im Vergleich*
+
+Eine weitere Form der Analyse ist es, das Gesamtnetzwerk nach dem Kantengewicht zu untersuchen. Damit lassen sich Dynamiken im professionellen und privaten Umfeld der InfluencerInnen aufzeigen. Wir wollen herausfinden, mit welchen Kooperationspartnern unsere InfluencerInnen im Jahr 2020 eine seltene Kooperation (ein bis neun Mal) und mit welchen eine häufige Kooperation (zehn bis 90 Mal) pflegten.
+
+```{r Kantengewichte des Gesamtnetzwerks vergleichen, fig.height=8, fig.width=16}
+
+# Wie ist das Gewicht verteilt
+list.edge.attributes(gym)
+edge.attributes(gym)$weight
+
+# selektiert alle Verbindungen mit einem Kantengewicht kleiner als 3
+weak <- subgraph.edges(gym, E(gym)[weight<3]) 
+edge.attributes(weak)$weight
+weak
+
+# selektiert alle Verbindungen mit einem Kantengewicht größer als 3
+strong <- subgraph.edges(gym, E(gym)[weight>3]) 
+edge.attributes(strong)$weight
+strong
+
+par(mfrow=c(1,4), mar=c(0,0,4,0)) # definiert, dass 3 plots in einer Zeile stehen
+
+plot(weak,
+     asp=0,
+     edge.arrow.size=.2,
+     edge.color="lightblue",
+     vertex.color="grey75",
+     edge.width=E(weak)$weight,
+     vertex.frame.color=NA,
+     main="seltene Kooperation")
+
+plot(strong, layout=layout_with_kk,
+     asp=0,
+     edge.arrow.size=.2,
+     edge.color="lightblue",
+     vertex.color="grey75",
+     edge.width=E(strong)$weight,
+     vertex.frame.color=NA,
+     main="häufige Kooperation")
+
+# setzt die Ansicht wieder auf einen Graph pro Zeile zurück
+par(mfrow=c(1,1), mar=c(0,0,1,2))
+
+```
+
+Nun teilen wir die gewonnenen Teilnetzwerke noch weiter auf, um einen besseren Überblick darüber zu bekommen, welche der seltenen und häufigen Verbindungen privater und welche professioneller Natur sind.
+
+```{r Kantengewichte der Teilnetzwerke work und private vergleichen, fig.height=8, fig.width=16}
+
+list.edge.attributes(gym)
+
+#Teilnetzwerke nach professioneller und privater Kooperation erstellen
+work <- subgraph.edges(gym, E(gym)[relation==1]) 
+work
+
+private <- subgraph.edges(gym, E(gym)[relation==2])
+private 
+
+# Wie ist das Gewicht verteilt?
+list.edge.attributes(work)
+edge.attributes(work)$weight
+
+list.edge.attributes(private)
+edge.attributes(private)$weight
+
+# selektiert alle Verbindungen mit einem Kantengewicht kleiner als 3
+weak_w <- subgraph.edges(work, E(work)[weight<3]) 
+edge.attributes(weak_w)$weight
+weak_w
+
+weak_p <- subgraph.edges(private, E(private)[weight<3]) 
+edge.attributes(weak_p)$weight
+weak_p
+
+# selektiert alle Verbindungen mit einem Kantengewicht größer als 3
+strong_w <- subgraph.edges(work, E(work)[weight>3]) 
+edge.attributes(strong_w)$weight
+strong_w
+
+strong_p <- subgraph.edges(private, E(private)[weight>3]) 
+edge.attributes(strong_p)$weight
+strong_p
+
+par(mfrow=c(1,4), mar=c(0,0,4,0)) # definiert, dass 3 plots in einer Zeile stehen
+
+plot(weak_w,
+     asp=0,
+     edge.arrow.size=.2,
+     edge.color="lightblue",
+     vertex.color="grey75",
+     edge.width=E(weak_w)$weight,
+     vertex.frame.color=NA,
+     main="seltene, professionelle Kooperation")
+
+plot(weak_p,
+     asp=0,
+     edge.arrow.size=.2,
+     edge.color="lightblue",
+     vertex.color="grey75",
+     edge.width=E(weak_p)$weight,
+     vertex.frame.color=NA,
+     main="seltene, private Kooperation")
+
+plot(strong_w, layout=layout_with_kk,
+     asp=0,
+     edge.arrow.size=.2,
+     edge.color="lightblue",
+     vertex.color="grey75",
+     edge.width=E(strong_w)$weight,
+     vertex.frame.color=NA,
+     main="häufige, professionelle Kooperation")
+
+plot(strong_p, layout=layout_with_kk,
+     asp=0,
+     edge.arrow.size=.2,
+     edge.color="lightblue",
+     vertex.color="grey75",
+     edge.width=E(strong_p)$weight,
+     vertex.frame.color=NA,
+     main="häufige, private Kooperation")
+
+# setzt die Ansicht wieder auf einen Graph pro Zeile zurück
+par(mfrow=c(1,1), mar=c(0,0,1,2))
+
+```
+
+Gut zu erkennen ist hier, dass die InfluencerInnen zu den meisten Marken eine seltene Kooperation pflegen, das heißt diese im Jahr 2020 nur ein-bis zehn Mal auf Instagram und YouTube beworben haben. Insgesamt pflegen die InfluencerInnen um einiges mehr professionelle als private Kooperationen und nur drei der fünf der InfluencerInnen haben eine häufige private Kooperation zu jeweils einer anderen Person.
+
+
+### Teilnetzwerke nach Node-Attributen
+Die Analyse der Teilnetzwerke nach Node-Attributen werden hier nur exemplarisch am Beispiel Geschlecht gezeigt. Der einfachste Weg ein Teilnetzwerk zu erstellen geht über den Befehl delete.vertices(). Damit werden alle Knoten samt Verbindungen gelöscht, die bestimmte Bedingungen erfüllen. Wenn die Node-Attribute numerisch codiert sind lassen sich logische Operatoren einsetzen.
+
+*Teilnetzwerke nach Geschlecht: Kombination von Node-Attributen*
+Im Folgenden wollen wir aus dem Gesamtnetzwerk alle Personen selektieren und diese wiederum in zwei Teilnetzwerke nach ihrem Geschlecht aufteilen.
+
+```{r Selektion nach Personen und Teilnetzwerke nach Node-Attribut Geschlecht, fig.height=6, fig.width=10, message=FALSE, warning=FALSE, paged.print=TRUE}
+
+#Teilnetzwerk nach Personen
+list.vertex.attributes(gym)
+vertex_attr(gym)$type
+
+gym_pers <- delete_vertices(gym, V(gym)[type != "1"]) 
+gym_pers
+
+plot(gym_pers,
+     asp=0,
+     layout_with_kk(gym_pers),
+     main="Gesamtnetzwerk: Personen",
+     edge.color="orange",
+     edge.arrow.size=.3,
+     vertex.color="yellow",
+     vertex.frame.color=NA)
+
+#Teilnetzwerke nach Geschlecht
+
+list.vertex.attributes(gym_pers)
+vertex_attr(gym_pers)$sex 
+
+gym_fem <- delete_vertices(gym_pers, V(gym_pers)[sex != "1"]) 
+gym_fem
+
+gym_male <- delete_vertices(gym_pers, V(gym_pers)[sex != "2"]) 
+gym_male
+
+par(mfrow=c(1,2), mar=c(0,0,2,0)) # definiert, dass 2 plots in einer Zeile stehen
+
+plot(gym_fem,
+     asp=0,
+     layout_with_kk(gym_fem),
+     main="Gesamtnetzwerk: weibliche Akteure",
+     edge.color="pink",
+     edge.arrow.size=.3,
+     vertex.color="pink",
+     vertex.frame.color=NA)
+
+plot(gym_male,
+     asp=0,
+     layout_with_kk(gym_male),
+     main="Gesamtnetzwerk: männliche Akteure",
+     edge.color="blue",
+     edge.arrow.size=.3,
+     vertex.color="blue",
+     vertex.frame.color=NA)
+
+# setzt die Ansicht wieder auf einen Graph pro Zeile zurück
+par(mfrow=c(1,1), mar=c(0,0,1,2))
+```
+
+Hier zeigt sich, dass alle unserer Influencerinnen Verbindungen zu weiblichen Akteuren haben, Alica Schmidt jedoch nur zu einer anderen Akteurin. Das heißt sie pflegt hauptsächlich persönliche Verbindungen zu männlichen Akteuren oder professionelle Kooperationen mit Organisationen und Marken. Tim Gabel als einziger männlicher Influencer, den wir betrachtet haben, ist  mit einigen männlichen Akteuren verbunden, ansonsten haben die Männer keine Verbindungen untereinander.
+
+*Teilnetzwerke nach Art der Kooperation: Fitness-InfluencerInnen und Sportmarken*
+
+Da wir uns in unserer Forschungsarbeit auf den Fitness-Aspekt konzentrieren, wollen wir nun die Verbindungen zwischen den Fitness-InfluencerInnen und zwischen den Sportmarken herausarbeiten und vergleichen.
+
+```{r Teilnetzwerke Fitness-InfluencerInnen und Sportmarken}
+
+list.vertex.attributes(gym)
+vertex_attr(gym)$cooperation
+
+#Teilnetzwerk nach Fitness-InfluencerInnen
+fitness <- delete_vertices(gym, V(gym)[cooperation != "fitness"]) 
+fitness
+
+#Teilnetzwerk nach Sportmarken
+sport <- delete_vertices(gym, V(gym)[cooperation != "sport"]) 
+sport
+
+par(mfrow=c(1,2), mar=c(0,0,2,0)) # definiert, dass 2 plots in einer Zeile stehen
+
+plot(fitness,
+     asp=0,
+     layout_with_kk(fitness),
+     main="Teilnetzwerk: Fitness-InfluencerInnen",
+     edge.color="orangered",
+     edge.arrow.size=.3,
+     vertex.color="orangered",
+     vertex.frame.color=NA)
+
+plot(sport,
+     asp=0,
+     layout_with_kk(sport),
+     main="Teilnetzwerk: Sportmarken",
+     edge.color="orange",
+     edge.arrow.size=.3,
+     vertex.color="orange",
+     vertex.frame.color=NA)
+
+# setzt die Ansicht wieder auf einen Graph pro Zeile zurück
+par(mfrow=c(1,1), mar=c(0,0,1,2))
+```
+Gut zu erkennen ist, dass unsere Fitness-InfluencerInnen nur mit wenigen anderen InfluencerInnen mit demselben Fachgebiet kooperieren. Pamela Reif zum Beispiel mit niemandem. Die Sportmarken untereinander arbeiten auch nur selten zusammen, bei den Verbindungen handelt es sich hauptsächlich um Schwesterfirmen.
+
+*Teilnetzwerke nach Corona-Phasen im Vergleich*
+
+Für den Vergleich nach Corona-Phasen interessieren uns nur unsere fünf Influencer:innen. Aus diesem Grund wird ein neues Gesamtnetzwerk erstellt.
+
+```{r neues Gesamtnetzwerk erstellen, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
+library(igraph)
+
+# Einlesen der Edge- und Nodelist
+el <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Edgelist%20Monate.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Nodelist.csv", header=T, as.is=T, sep = ",")
+
+# Matrix erstellen
+edgematrix <-as.matrix(el)
+
+# Zusammenführen von Edge- und Nodelist als igraph-Objekt gym
+gym_corona <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed="FALSE")
+gym_corona
+
+plot(gym_corona,
+     asp=0, 
+     layout_with_kk(gym_corona),
+     edge.arrow.size=.5,
+     vertex.size=10,
+     main ="Übersicht Gesamtnetzwerk")
+```
+
+Nun selektieren wir die Kooperationen in den vier Phasen der Corona-Pandemie im Vergleich. 
+
+```{r Teilnetzwerke nach Corona-Phasen erstellen, echo=FALSE, message=FALSE, warning=FALSE, paged.print=TRUE}
+# Art der Corona-Phase
+edge_attr(gym_corona)$time
+
+pre_corona <- subgraph.edges(gym_corona, E(gym_corona)[time==1]) 
+pre_corona
+#80 Knoten, 81 Verbindungen
+
+lockdown1 <- subgraph.edges(gym_corona, E(gym_corona)[time==2])
+lockdown1
+#60 Knoten, 56 Verbindungen
+
+corona_no_lockdown <- subgraph.edges(gym_corona, E(gym_corona)[time==3])
+corona_no_lockdown
+#140 Knoten, 146 Verbindungen
+
+lockdown2 <- subgraph.edges(gym_corona, E(gym_corona)[time==4])
+lockdown2
+#101 Knoten, 103 Verbindungen
+
+plot (pre_corona,
+      asp=0,
+      layout=layout_with_dh(pre_corona),
+      edge.arrow.size=.4,
+      edge.width=E(pre_corona)$weight,
+     edge.color="skyblue",
+     vertex.color="skyblue",
+     vertex.frame.color=NA,
+     vertex.label.color="black",
+     vertex.size=3,
+     main="Kooperationen vor Corona",
+     sub="Januar bis März 2020")
+
+plot (lockdown1,
+      asp=0,
+      layout=layout_with_dh(lockdown1),
+      edge.arrow.size=.4,
+      edge.width=E(lockdown1)$weight,
+     edge.color="lightblue3",
+     vertex.color="lightblue3",
+     vertex.frame.color=NA,
+     vertex.label.color="black",
+     vertex.size=3,
+     main="Kooperationen erster Lockdown",
+     sub="April 2020")
+
+plot (corona_no_lockdown,
+      asp=0,
+      layout=layout_with_dh(corona_no_lockdown),
+      edge.arrow.size=.4,
+      edge.width=E(corona_no_lockdown)$weight,
+     edge.color="blue",
+     vertex.color="blue",
+     vertex.frame.color=NA,
+     vertex.label.color="black",
+     vertex.size=3,
+     main="Kooperationen Corona, kein Lockdown",
+     sub="Mai bis Oktober 2020")
+
+plot (lockdown2,
+      asp=0,
+      layout=layout_with_dh(lockdown2),
+      edge.arrow.size=.4,
+      edge.width=E(lockdown2)$weight,
+     edge.color="darkblue",
+     vertex.color="darkblue",
+     vertex.frame.color=NA,
+     vertex.label.color="black",
+     vertex.size=3,
+     main="Kooperationen zweiter Lockdown",
+     sub="November und Dezember 2020")
+
+```
+
+Gut zu erkennen ist, dass besonders von Mai bis Oktober 2020 die Anzahl an Kooperationen stark ansteigt. In dieser Zeit gab es zwar Corona-Maßnahmen, allerdings nicht so viele Einschränkungen wie im Lockdown. Im zweiten Lockdown geht zwar die Anzahl der Kooperationspartner etwas herunter, allerdings kooperieren die Influencer:innen hier öfter mit demselben Akteur. Das ist deutlich an der Dicke der Kanten zu erkennen. Unsere Arbeitshypothese, dass die Influencer:innen ab März 2020 mehr Werbung gepostet haben als im Januar oder Februar 2020, lässt sich also in weiten Teilen bestätigen. Der Anstieg geht aber erst ab Mai 2020 so richtig los.
+
+
+
+## Ego-Netzwerke
+
+Um genauer zu untersuchen, wie und mit wem unsere ausgewählten Fitness-Influencer:innen kooperieren, erstellen wir zu ihnen Egonetzwerke ersten und zweiten Grades.
+
+__Ego-Netzwerk __
+
+```{r Ego-Netzwerk von Pamela Reif erstellen}
+
+# Wir erstellen ein vereinfachtes Gesamtnetzwerk
+library(igraph)
+el <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Edgelist.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/Carla-Benzing/Gymfluencer/main/Edge-%20%26%20Nodelist%20-%20Nodelist.csv", header=T, as.is=T, sep = ",")
+edgematrix <-as.matrix(el)
+
+
+# 1. Egonetzwerk Pamela Reif
+
+## Alle Knoten, die mit Pamela Reif verbunden sind
+pr <- make_ego_graph(gym, order = 1, nodes = V(gym)$name == "Pamela Reif", mode ="all")
+pr
+
+
+## Visualisierung des selektierten Ego-Netzwerks
+pr1 <- pr[[1]]
+pr1
+
+plot(pr1, 
+     main="Ego-Netzwerk Pamela Reif, erster Grad",
+     vertex.frame.color=NA,
+     edge.color="grey80",
+     edge.arrow.size=.3,
+     edge.width=E(pr1)$weight)
+
+## Aus wie vielen Komponenten besteht das Netzwerk?
+is.connected(pr1)
+components(pr1)
+```
+
+Das Ego-Netzwerk von Pamela Reif besteht aus insgesamt 32 Knoten. Das bedeutet, dass sie im Jahr 2020 mit 31 Partnern kooperiert hat. Davon waren 26 Kooperationen mit Organisationen und fünf Kooperationen ging Pamela mit Personen ein. Am häufigsten postete Pamela über Warner Music, weitere häufige Kooperationspartner waren ihr Bruder Dennis Reif sowie Calzedonia, Naked, HEJ natural und Epidemic Sound. 
+
+
+```{r Egonetzwerk Pamela Reif zweiter Ordnung}
+
+# 1.2 Egonetzwerk Pamela Reif zweiten Grades
+pr2 <- make_ego_graph(gym, order = 2, nodes = V(gym)$name == "Pamela Reif", mode ="all")
+pr2 <- pr2[[1]]
+
+
+V(pr2)[V(pr2)$name == "Pamela Reif"]$frame.color <- "red"
+V(pr2)[V(pr2)$name == "Evelina Mamajeva"]$frame.color <- "red"
+V(pr2)[V(pr2)$name == "Alicia Schmidt"]$frame.color <- "red"
+
+plot(pr2, 
+     main="Ego-Netzwerk Pamela Reif, 2. Grades",
+     vertex.color="orange",
+     #vertex.frame.color=NA,
+     edge.color="grey80",
+     edge.arrow.size=.3,
+     edge.width=E(pr2)$weight,
+     sub="Beziehungen des zweiten Grads")
+```
+
+Sowohl Pamela Reif als auch Evelina Mamajeva kooperieren mit Douglas und Sante Naturkosmetik. Häufig kooperiert Pamela mit Puma, genauso wie Alicia Schmidt. Die beiden könnten sich über die häufige Zusammenarbeit mit Puma kennen.
+
+```{r Egonetzwerk von Alicia Schmidt}
+
+# 2. Egonetzwerk Alicia Schmidt
+
+as <- make_ego_graph(gym, order = 1, nodes = V(gym)$name == "Alicia Schmidt", mode ="all")
+as
+
+## Visualisierung des selektierten Ego-Netzwerks
+as1 <- as[[1]]
+as1
+
+plot(as1, 
+     main="Ego-Netzwerk Alicia Schmidt, erster Grad",
+     vertex.frame.color=NA,
+     edge.color="grey80",
+     edge.arrow.size=.3,
+     edge.width=E(as1)$weight)
+
+## Aus wie vielen Komponenten besteht das Netzwerk?
+is.connected(as1)
+components(as1)
+
+```
+
+Das Egonetzwerk um Alicia Schmidt besteht aus insgesamt 16 Knoten. Im Jahr 2020 hat sie also mit 15 Partnern kooperiert. Alicia hat mit 13 Organisationen und 2 Personen zusammengearbeitet. Ihre Hauptkooperationspartner war Foodspring, gefolgt von Puma und Honor.
+
+```{r Egonetzwerk Alicia Schmidt zweiter Ordnung}
+
+# 2.1 Egonetzwerk Alicia Schmidt zweiten Grades
+as2 <- make_ego_graph(gym, order = 2, nodes = V(gym)$name == "Alicia Schmidt", mode ="all")
+as2 <- as2[[1]]
+
+V(as2)[V(as2)$name == "Alicia Schmidt"]$frame.color <- "red"
+V(as2)[V(as2)$name == "Pamela Reif"]$frame.color <- "red"
+
+plot(as2, 
+     main="Ego-Netzwerk Alicia Schmidt, 2. Grades",
+     vertex.color="orange",
+     #vertex.frame.color=NA,
+     edge.color="grey80",
+     edge.arrow.size=.3,
+     edge.width=E(as2)$weight,
+     sub="Beziehungen des zweiten Grads")
+
+
+```
+Das Egonetzwerk zweiten Grades um Alicia Schmidt zeigt erneut die indirekte Verbindung zur Fitnessinfluencerin Pamela Reif über Puma. An der Dicke der Kante sieht man jedoch, dass Alicia Schmidt etwas häufiger Puma bewirbt als Pamela.
+
+```{r Egonetzwerk von Evelina Mamajeva erstellen}
+
+# 3. Egonetzwerk Evelina Mamajeva
+
+em <- make_ego_graph(gym, order = 1, nodes = V(gym)$name == "Evelina Mamajeva", mode ="all")
+em
+
+## Visualisierung des selektierten Ego-Netzwerks 
+em1 <- em[[1]]
+em1
+
+plot(em1, 
+     main="Ego-Netzwerk Evelina Mamajeva, erster Grad",
+     vertex.frame.color=NA,
+     edge.color="grey80",
+     edge.arrow.size=.3,
+     edge.width=E(em1)$weight)
+
+## Aus wie vielen Komponenten besteht das Netzwerk?
+is.connected(em1)
+components(em1)
+
+
+```
+
+Das Egonetzwerk um Evelina Mamajeva besteht aus insgesamt 39 Knoten. Das bedeutet, dass die Influencerin im Jahr 2020 zu 38 Kooperationspartnern direkte Verbindungen hatte. Kooperationen entstanden mit 32 Ogranisationen und sechs Personen. Evelina warb am häufigsten für Gymshark und die dazugehörigen Teilmarken Gymsharktrain und GymsharkWomen. Häufig kooperierte sie ebenfalls mit nu3 und  ihrem Freund Alex Kukla, der ebenfalls Fitnessinfluencer ist.
+
+```{r Egonetzwerk Evelina Mamajeva zweiter Ordnung}
+
+# 3.1 Egonetzwerk Evelina Mamajeva zweiten Grades
+em2 <- make_ego_graph(gym, order = 2, nodes = V(gym)$name == "Evelina Mamajeva", mode ="all")
+em2 <- em2[[1]] 
+
+
+V(em2)[V(em2)$name == "Evelina Mamajeva"]$frame.color <- "red"
+V(em2)[V(em2)$name == "Pamela Reif"]$frame.color <- "red"
+V(em2)[V(em2)$name == "Tim Gabel"]$frame.color <- "red"
+
+
+plot(em2, 
+     main="Ego-Netzwerk Evelina Mamajeva, 2. Grades",
+     layout=layout_with_dh(em2),
+     vertex.color="orange",
+     #vertex.frame.color=NA,
+     edge.color="grey80",
+     edge.arrow.size=.3,
+     edge.curved=curve_multiple(em2),
+     edge.width=E(em2)$weight,
+     sub="Beziehungen des zweiten Grads")
+
+
+```
+
+Das Egonetzwerk zweiten Grades um Evelina Mamajeva zeigt indirekte Verbindungen zu Pamela Reif sowie Tim Gabel.
+
+```{r Egonetzwerk von Tim Gabel erstellen}
+
+# 4. Egonetzwerk Tim Gabel
+
+tg <- make_ego_graph(gym, order = 1, nodes = V(gym)$name == "Tim Gabel", mode ="all")
+tg
+
+## Visualisierung des selektierten Ego-Netzwerks (Zwischenschritt notwendig)
+tg1 <- tg[[1]]
+tg1
+
+plot(tg1, 
+     main="Ego-Netzwerk Tim Gabel, erster Grad",
+     vertex.frame.color=NA,
+     edge.color="grey80",
+     edge.arrow.size=.3,
+     edge.width=E(tg1)$weight)
+
+## Aus wie vielen Komponenten besteht das Netzwerk?
+is.connected(tg1)
+components(tg1)
+
+```
+
+Das Egonetzwerk um Tim Gabel besteht aus insgesamt 23 Knoten. Er hat im Jahr 2020 also mit 22 Partnern direkt kooperiert. Davon waren sechs Kooperationen mit Organisationen und 16 mit Personen. Am häufigsten warb Tim Gabel für Gymshark und ZecPlus. Fast genauso häufig bewarb er seine eigenes Fitnessprogramm (G-in) und die dazugehörende Klamottenmarke Olakala. Dabei kooperiert er zusammen mit seinem Geschäftspartner, Fitness-Influencer Nico Lazaridis. 
+
+```{r Egonetzwerk Tim Gabel zweiter Ordnung}
+
+# 4.2 Egonetzwerk Tim Gabel zweiten Grades
+
+tg2 <- make_ego_graph(gym, order = 2, nodes = V(gym)$name == "Tim Gabel", mode ="all")
+tg2 <- tg2[[1]]
+
+V(tg2)[V(tg2)$name == "Tim Gabel"]$frame.color <- "red"
+V(tg2)[V(tg2)$name == "Evelina Mamajeva"]$frame.color <- "red"
+V(tg2)[V(tg2)$name == "Lisa Del Piero"]$frame.color <- "red"
+
+plot(tg2, 
+     main="Ego-Netzwerk Tim Gabel, 2. Grades",
+     vertex.color="orange",
+     #vertex.frame.color= NA,
+     edge.color="grey80",
+     edge.arrow.size=.3,
+     edge.width=E(tg2)$weight,
+     sub="Beziehungen des zweiten Grads")
+
+```
+
+Die Marke Gymshark ist sowohl von Tim Gabel als auch von Evelina Mamajeva ein Hauptkooperationspartner. Beide Fitnessinfluencer könnten sich über diese Verbindung kennen. Eine private Verbindung haben Tim Gabel und Lisa Del Piero zu Emilia Bte, mit der beide auch kooperiert haben.
+
+```{r Egonetzwerk von Lisa Del Piero erstellen}
+
+# 5. Egonetzwerk Lisa Del Piero
+
+ldp <- make_ego_graph(gym, order = 1, nodes = V(gym)$name == "Lisa Del Piero", mode ="all")
+ldp
+
+## Visualisierung des selektierten Ego-Netzwerks
+ldp1 <- ldp[[1]]
+ldp1
+
+plot(ldp1, 
+     main="Ego-Netzwerk Lisa Del Piero, erster Grad",
+     vertex.frame.color=NA,
+     edge.color="grey80",
+     edge.arrow.size=.3,
+     edge.width=E(ldp1)$weight)
+
+## Aus wie vielen Komponenten besteht das Netzwerk?
+is.connected(ldp1)
+components(ldp1)
+
+```
+
+Das Egonetzwerk um Lisa Del Piero besteht aus insgesamt acht Knoten. Demnach hat sie im Jahr 2020 mit sieben Kooperationspartnern zusammengearbeitet. Davon sind lediglich drei Organisationen, vier sind reale Personen. Am häufigsten kooperierte Lisa Del Piero mit Shaperepublic und Gymondo.
+
+```{r Egonetzwerk Lisa Del Piero zweiter Ordnung}
+
+# 5.2 Egonetzwerk Lisa Del Piero zweiten Grades
+
+ldp2 <- make_ego_graph(gym, order = 2, nodes = V(gym)$name == "Lisa Del Piero", mode ="all")
+ldp2 <- ldp2[[1]]
+
+V(ldp2)[V(ldp2)$name == "Lisa Del Piero"]$frame.color <- "red"
+V(ldp2)[V(ldp2)$name == "Tim Gabel"]$frame.color <- "red"
+
+plot(ldp2, 
+     main="Ego-Netzwerk Lisa Del Piero, 2. Grades",
+     vertex.color="orange",
+     #vertex.frame.color=NA,
+     edge.color="grey80",
+     edge.arrow.size=.3,
+     edge.width=E(ldp2)$weight,
+     sub="Beziehungen des zweiten Grads")
+
+```
+
+Das Egonetzwerk zweiter Ordnung zeigt erneut, dass Lisa Del Piero und Tim Gabel mit der Fitness-Influencerin Emilia Bte kooperiert haben. Die Beziehung ist jedoch recht schwach.
+
+### Vergleich der ausgewählten Fitness-Influencer und deren Kooperationen
+
+Bei den Egonetzwerken der Fitness-Influencer:innen fällt auf, dass sie am meisten Verbindungen zu Unternehmen haben, die meisten Kooperationen sind folglich als professionell und unter Werbung einzuordnen. Eine Ausnahme bilden jedoch Tim Gabel und Lisa Del Piero. Beide haben mit mehr Personen als Unternehmen kooperiert, vor allem bei Tim ist ein auffällig großer Unterschied (16 Personen und sechs Unternehmen). Bei Tim Gabel lässt sich der Unterschied damit erklären, dass er aufgrund einer Verletzung 2020 weniger Fitness-Content, wie Workout-Videos, und mehr Podcasts mit verschiedenen Gästen veröffentlicht hat. Bei allen Fitness-Influencer:innen ist ein klarer "Hauptkooperationspartner" zu erkennen, d.h. ein Unternehmen, für das sie öfters als für jeden anderen Kooperationspartner werben. Die Hauptkooperationspartner sind bei allen Fitness-Influencer:innen in der Kategorie "sport" zu verorten. - vlt. Glaubwürdigkeitsaspekt?-
+Die Netzwerke zweiten Grades zeigen, dass alle Influencer:innen zwar nicht direkt miteinander kooperiert haben aber indirekt miteinander verbunden sind, da sie z.B. für die gleiche Marke werben oder mit derselben Person zusammengearbeiet haben.
+
+
+
+# Visualisiserung
+Für die abschließende Visualisierung sollten Sie mindestens zwei ausgewählte Grafiken zeigen: ein Mal das Gesamtnetzwerk (ggf. mit verschiedenen Unterteilungen) und dann mindestens ein spezifisches Netzwerk, das für die Analyse besonders relevant ist. Besonders aussagekräftig werden die Analysen, wenn Netzwerke nach bestimmten Node- oder Vertex-Attributen verglichen werden oder einzelne Ego-Netzwerke analysiert werden. Achten Sie hier auch darauf, bestimmte Zentralitätmaße zu verwenden.
+
+__Anmerkung__
+Hilfreiche Visualisierungstutorials gibt es hier
+[+ [Die Tutorials von K. Ognyanova](https://kateto.net/network-visualization)
+[+ [Network Visualization Cookbook](https://rstudio-pubs-static.s3.amazonaws.com/341807_7b9d1a4e787146d492115f90ad75cd2d.html)
+[+ [Dai Chizuka's Tutorial](https://dshizuka.github.io/networkanalysis/tutorials.html)
+
+
+## Gesamtnetzwerk
+
+```{r Visualisierung Gesamtnetzwerk , fig.height=8, fig.width=12, message=FALSE, warning=FALSE}
+library(igraph)
+el <- read.csv("https://raw.githubusercontent.com/hdm-crpr/226305/master/data/crpr2/edges.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/hdm-crpr/226305/master/data/crpr2/nodes.csv", header=T, as.is=T, sep = ",")
+edgematrix <-as.matrix(el)
+s <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=T)
+list.edge.attributes(s)
+ss <- delete_edge_attr(s, "relation")
+ss <- delete_edge_attr(s, "complicated")
+s_sim <- simplify(ss,edge.attr.comb=list(weight="sum"))
+
+# Plotting 
+
+# definiert die Ränder (unten, link, oben, rechts)
+par(mar=c(10,1,8,1)) 
+
+plot(s_sim,
+     asp=0,
+     layout=layout_nicely,
+     vertex.size=degree(s_sim, mode="all"), # Knotengröße nach Degree-Wert
+     vertex.label.cex=2,
+     vertex.frame.color=NA,
+     edge.arrow.size=.7,
+     edge.color="black",
+     edge.width=E(s_sim)$weight/2, #halbiert den Wert der Gewichte, um eine bessere Darstellung zu ermöglichen
+     edge.curved=.2,
+     edge.curved=curve_multiple(s_sim),
+     )
+
+title("Gesamtnetzwerk vereinfacht", 
+      sub = "aggregierte Gewichte von Ratsuche und Zusammenarbeit",
+      cex.main = 3, col.main= "orange",
+      cex.sub = 2, font.sub = 3, col.sub = "black")
+
+par(mar=c(2,2,2,2)) 
+
+```
+```{r Visualisierung von Farbverläufen von Werten, fig.height=8, fig.width=12, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+library(igraph)
+el <- read.csv("https://raw.githubusercontent.com/hdm-crpr/226305/master/data/crpr2/edges.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/hdm-crpr/226305/master/data/crpr2/nodes.csv", header=T, as.is=T, sep = ",")
+edgematrix <-as.matrix(el)
+s <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=T)
+list.edge.attributes(s)
+ss <- delete_edge_attr(s, "relation")
+ss <- delete_edge_attr(s, "complicated")
+s <- simplify(ss,edge.attr.comb=list(weight="sum"))
+
+# Berechnung des Indegree-Werts normalisiert
+ins <- degree(s, mode = "in", normalized = TRUE)
+
+# legt die Farbskala fest
+palette = colorRampPalette(c('lightblue','darkblue'))
+
+# die Palette wird in 10 Schritte unterteilt.
+fine = 10
+graphCol = palette(fine)[as.numeric(cut(ins, breaks = fine))] 
+
+# der folgende Plot ist um einige weitere Visualisierungsparameter ergänzt
+
+par(mar=c(10,1,10,1))
+
+plot(s, 
+     asp=0,
+     rescale=TRUE,
+     layout=layout_nicely,
+     vertex.color=graphCol, #verwende als Farbe die Farbpalette 
+     vertex.label=NA,
+     vertex.size=6, # hier könnte auch die Größe der indegrees gesetzt werden
+     vertex.frame.color = "white", 
+     edge.color="lightblue", 
+     edge.width=E(s_sim)$weight/2, 
+     edge.curved=.2,
+     edge.curved=curve_multiple(s)
+)
+
+title("Wer wird um Rat gefragt? (n=38)", 
+      sub = "Visualisierung nach normalisierter Indegree-Verteilung",
+      cex.main = 2, col.main= "darkblue",
+      cex.sub = 2, font.sub = 3, col.sub = "black")
+
+```
+
+
+
+
+### Gesamtnetzwerk nach Node-Attribut: Vertiefung und Geschlecht
+
+```{r Geschlechtsverteilung, fig.height=8, fig.width=10, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+library(igraph)
+el <- read.csv("https://raw.githubusercontent.com/hdm-crpr/226305/master/data/crpr2/edges.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/hdm-crpr/226305/master/data/crpr2/nodes.csv", header=T, as.is=T, sep = ",")
+edgematrix <-as.matrix(el)
+s <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=T)
+list.edge.attributes(s)
+ss <- delete_edge_attr(s, "relation")
+ss <- delete_edge_attr(s, "complicated")
+s <- simplify(ss,edge.attr.comb=list(weight="sum"))
+
+# Farben und Formen setzen
+
+# weist den Attributswerten entsprechende Farben zu
+V(s)[V(s)$sex == 1]$color <- "pink"
+V(s)[V(s)$sex == 2]$color <- "lightblue"
+V(s)[V(s)$sex == 3]$color <- "lightgreen"
+
+# weist den Attributswerten der Vertiefung entsprechende Formen zu
+vertex.attributes(s)$crpr
+V(s)[V(s)$crpr == 1]$shape <- "square"  
+V(s)[V(s)$crpr == 2]$shape <- "circle"
+
+
+# definiert die Ränder (unten, link, oben, rechts)
+par(mar=c(12,1,8,1)) 
+
+plot(s,
+     asp=0,
+     layout=layout_nicely,
+     # vertex.size=degree(s, mode="all"), # Knotengröße nach Degree-Wert
+     vertex.frame.color=NA,
+     vertex.size=7,
+     vertex.label.cex=1,
+     vertex.label.color="black",
+     edge.arrow.size=.7,
+     edge.color="gray20",
+     edge.width=E(s_sim)$weight/2, #halbiert den Wert der Gewichte, um eine bessere Darstellung zu ermöglichen
+     edge.curved=.2,
+     edge.curved=curve_multiple(s),
+     )
+
+title("Gesamtnetzwerk: Vertiefung und Geschlecht", 
+      sub = "Vertiefung und Geschlecht",
+      cex.main = 2, col.main= "black",
+      cex.sub = 2, font.sub = 3, col.sub = "black")
+
+par(mar=c(2,2,2,2)) 
+```
+
+### Multiplexes Netzwerk
+Um das etwas übersichtlicher darszustellen, bietet sich bei einem Netzwerk mit verschiedenen Beziehungsarten an, diese farblich zu unterscheiden. 
+
+```{r Visualisierung eines multiplexe Netzwerke erstellen, fig.height=8, fig.width=10}
+library(igraph)
+el <- read.csv("https://raw.githubusercontent.com/hdm-crpr/226305/master/data/crpr2/edges.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/hdm-crpr/226305/master/data/crpr2/nodes.csv", header=T, as.is=T, sep = ",")
+edgematrix <-as.matrix(el)
+s <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=T)
+
+# definiert die Farbe der Relation
+E(s)[E(s)$relation == 1]$color <- "blue" 
+E(s)[E(s)$relation == 2]$color <- "darkgreen"
+E(s)[E(s)$relation == 3]$color <- "red"
+
+# Plot mit den gesetzten Farben für das Attribut Beziehung realisieren
+
+# Visualisierungsparameter festlegen
+par(mar=c(6,3,3,3)) 
+
+# Plot mit den gesetzten Farben für das Attribut Beziehung realisieren
+plot(s,
+     asp=0,
+     edge.arrow.size=.5,
+     vertex.color="gray75",
+     vertex.frame.color="NA",
+     vertex.size=8,
+     layout=layout_with_kk,
+     edge.curved=curve_multiple(s),
+     main="Multiplexes Netzwerk, d.h. verschiedene Formen der Beziehung",
+     sub="n=38 Knoten; Kantenfarbe 
+     blau=Zusammenarbeit, grün=Ratsuche, rot=Beziehung")
+
+par(mar=c(0,0,0,0)) 
+# setzt die Seitenaufteilung zurück
+par(mfrow=c(1,1), mar=c(2,0,2,0)) 
+
+```
+
+```{r Teilnetzwerke im Vergleich, fig.height=6, fig.width=9, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(igraph)
+el <- read.csv("https://raw.githubusercontent.com/hdm-crpr/226305/master/data/crpr2/edges.csv", header=T, as.is=T, sep = ",")
+nodes <- read.csv("https://raw.githubusercontent.com/hdm-crpr/226305/master/data/crpr2/nodes.csv", header=T, as.is=T, sep = ",")
+edgematrix <-as.matrix(el)
+s <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=T)
+
+# definiert die Farbe der Relation
+E(s)[E(s)$relation == 1]$color <- "blue" 
+E(s)[E(s)$relation == 2]$color <- "darkgreen"
+E(s)[E(s)$relation == 3]$color <- "red"
+
+# erstellt die Teilnetzwerke 
+work <- subgraph.edges(s, E(s)[relation==1]) 
+help <- subgraph.edges(s, E(s)[relation==2])
+love <- subgraph.edges(s, E(s)[relation==3])
+
+# Drei Netzwerke in einer Ziele
+par(mfrow=c(1,3), mar=c(2,0,2,0)) 
+
+# Drei Teilnetzwerke nacheinander plotten, diese werden dann in einer Zeile dargestellt
+
+plot(work,
+     asp=0,
+     edge.arrow.size=.5,
+     vertex.color="gray75",
+     vertex.frame.color="NA",
+     vertex.size=8,
+     layout=layout_with_kk,
+     edge.curved=curve_multiple(work),
+     main="Teilnetzwerk Work",
+     sub="n=38 Knoten; Kantenfarbe blau"
+     )
+
+plot(help,
+     asp=0,
+     edge.arrow.size=.5,
+     vertex.color="gray75",
+     vertex.frame.color="NA",
+     vertex.size=8,
+     layout=layout_with_kk,
+     edge.curved=curve_multiple(help),
+     main="Teilnetzwerk Help",
+     sub="n=38 Knoten; Kantenfarbe grün",
+)
+     
+plot(love,
+     asp=0,
+     edge.arrow.size=.5,
+     vertex.color="gray75",
+     vertex.frame.color="NA",
+     vertex.size=8,
+     layout=layout_with_kk,
+     edge.curved=curve_multiple(love),
+     main="Teilnetzwerk Help",
+     sub="n=38 Knoten; Kantenfarbe grün"
+)
+
+# setzt die Seitenaufteilung zurück
+par(mfrow=c(1,1), mar=c(2,0,2,0)) 
+
+```
+
+
+
+# Diskussion: Fazit, Limitationen und Ausblick
+Hier findet die Diskussion der Ergebnisse statt:
+- Wurden anfangs Arbeitshypothesen aufgestellt? Lassen sich diese bestätigen oder widerlegen?
+- Welche (neuen) Erkenntnisse hat die Analyse gebracht?
+- Wo liegen die Limitationen in der Studie?
+- Was könnten nächste Schritte in der Forschung sein?
+
+# Anlage
+## Literatur
+
+Dunkake I. (2012). Soziale Netzwerke von Schülern: Beispiele angewandter Netzwerkanalysen. In: Hennig M. & Stegbauer C. (Hg.): Die Integration von Theorie und Methode in der Netzwerkforschung. Wiesbaden: VS Verlag für Sozialwissenschaften, S. 133-155.
+
+Hummel & Sodeur (2010). Dyaden und Triaden. In: Stegbauer, C. & Häußling, R. (Hg.): Handbuch Netzwerkforschung. Wiesbaden: VS Verlag, S.  
+
+Krackhardt D. (1987). Cognitive social structures. Social Networks, 9, 104-134.  
+
+Luke, D. A. (2015). A user's guide to network analysis in R. Cham, Switzerland: Springer.  
+
+Ognyanova, K.(2019). Network Visualization with R. Sunbelt 2019 Workshop, Montreal, Canada. www.kateto.net/sunbelt2019   
+
+## Codebuch
+[Codebuch](https://github.com/hdm-crpr/226305/blob/master/data/crpr2/codebuch.md)
+
+```{r Übersicht Netzwerkattribute}
+list.vertex.attributes(s)
+# vertex.attributes(s)
+list.edge.attributes(s)
+# edge.attributes(s)
+```
+
+Das Netzwerk hat nach dem [Codebuch](https://github.com/hdm-crpr/226305/blob/master/data/crpr2/codebuch.md) folgende Attribute:
+
+*Vertex-Attribute*
+- name: Name des Knotens, anonym codiert von 1 bis 38
+- sex: Geschlecht 1 weiblich, 2 männlich, 3 divers
+- crpr: Vertiefungsrichtung (1 CR, 2 PR)
+- age: Alter 1 bis 20, 2 21-22, 3 23-24, 4 25 und älter
+- smoke: Nichtraucher 1, Raucher 2
+- tatoo: nein 1, ja 2
+- eyes: Augenfarbe: 1 grün, 2 blau, 3 braun, 4 blau.
+- hair: Haarfarbe: 1 braun, 2 schwarz, 3 blond, 4 rot
+
+Die Vertex-Attribute treffen auf alle Knoten zu.
+
+*Edge-Attribute*
+- weight: Erste Nennung (Primärer Kontakt). Zweite Nennung (Sekunderärer Kontakt)
+- relation: Ratsuche (help), Zusammenarbeit (work), Liebesbeziehung (love)
+- complicated: bezieht sich nur auf das Teilnetzwerk Liebesbeziehung
+
+Die Edge-Attribute sind unterschiedlich verteilt. Durch die Erhebung haben die Studierenden ein Ratsuchenetzwerk (Wen fragst Du um Rat?) und ein Zusammenarbeitsnetzwerk (Mit wem arbeitest Du am liebsten zusammen?) angeben müssen. Für beide Fragen gab es eine erste und ein zweite Nennung. Die erste Nennung wird entsprechend höher gewichtet. Die Fragen waren verpflichtend. Das bedeutet, dass die Edges sich wie folgt verteilen: 38*2 = 76 Beziehungenangaben für jeweils help und work.
+
+
+## Datenmaterial und Skript
+[Datensatz](https://github.com/hdm-crpr/226305/blob/master/data/crpr2/readme.md)
+
+## Team, Arbeitsaufwand und Lessons Learned
+
+### Teammitglieder
+NN
+NN
+NN
+
+### Arbeitsaufwand und Rollen im Team
+NN: Projektleitung und Coding, ca. 80 Stunden
+NN: Literaturrecherche und Auswertung, ca. 80 Stunden
+NN: Endbericht und Visualiserung, ca. 80 Stunden
+
+
+### Lessons learned
+Bitte beschreiben Sie kurz als Team, was ihre größte Herausforderung war und was der größte Lernerfolg in dem Projekt. 
