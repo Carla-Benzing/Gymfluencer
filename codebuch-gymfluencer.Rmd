@@ -1,0 +1,124 @@
+---
+title: "Codebuch"
+author: "Carla Benzing"
+date: "2 5 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Codebuch
+
+## Nodelist
+### id
+Identifikation jedes Knotens
+
+### name
+Name des Knotens
+
+### sex
+Welchem Geschlecht gehören die Akteure an?
+1 		=	weiblich 
+2 		= 	männlich 
+3 		= 	divers
+0		= 	Keine Angabe 
+
+
+### cooperation
+Zu welchen Branchen können die Akteure zugeordnet werden?
+
+Marken
+sport 		= 	Sport 
+beauty		= 	Beauty 
+food 		= 	Essen 
+fashion 	= 	Fashion 
+car 		= 	Auto 
+house		= 	Haushalt
+travel		= 	Reisen o.ä. 
+fun		= 	Unterhaltung 
+erotik		= 	Erotik
+communication= 	Kommunikationsfirmen / Agenturen
+education	= 	Bildungseinrichtungen etc. 
+volunteer 	= 	Ehrenamt/ Nonprofit Organisationen
+sound		= 	Musik
+
+Personen
+music 		= 	Musiker:in
+fitness 		= 	Sportler:in
+style 		= 	Fashion
+life		= 	Lifestyle
+politic		= 	Politiker:in
+work		= 	Geschäftspartner:in
+photo 		= 	Fotograf:in/ Bildbearbeiter:in
+acting		= 	Schauspieler:in
+dance		=	Tänzer:in
+
+Tier
+dog 		= 	Hund
+
+Familie
+bro 		= 	Bruder 
+mum 		= 	Mutter
+dad 		= 	Vater 
+partner		= 	Partner*in
+
+
+### type
+Handelt es sich um eine Person oder um eine Organisation?
+1 		= 	Person
+2 		= 	Marke
+3		=	Tier
+
+
+
+## Edgelist
+
+### from
+Entspricht der ID in der Nodelist, definiert den Sender
+
+### to
+Entspricht der ID in der Nodelist, definiert den Sender
+
+### relation: 
+In welcher Verbindung stehen die Akteure zueinander?
+1 		= 	Kooperation
+2 		= 	Privat 
+3 		= 	Journalistisches Produkt
+4 		= 	Verbindung zwischen Organisationen/Akteuren (Schwesterfirmen) 
+5		=	Vermutlich unbezahlte Erwähnungen/Anzeigen
+
+### weight: 
+Wie häufig wurde das Unternehmen/die Person im gesamten Jahr 2020 erwähnt?
+0		=	keine Angabe
+1		= 	1-2 Mal 
+2		= 	3-4 Mal
+3		=	5-9 Mal
+4		=	10-20 Mal
+5		=	21-30 Mal
+6		= 	31-50 Mal
+7		= 	50-70 Mal
+8		= 	70-90 Mal
+
+
+
+
+
+## Edgelist Monate:
+### time:
+Wie oft hat der/die Influencer*in in einem Zeitraum auf Marke/die Person aufmerksam gemacht?
+
+1	=	Vor Corona (Januar bis März 2020) 
+2	=	Erster Lockdown (April 2020)
+3	=	Corona, kein Lockdown (Mai bis Oktober 2020)
+4	= 	Zweiter Lockdown (November und Dezember 2020)
+
+
+### weight 
+
+Berechnet wird die Zahl der Anzeigen in einer bestimmter Zeitspanne (von einer Marke) geteilt durch die Anzahl der Monate.
+Dabei runden wir auf drei Nachkommastellen.
+
+
+
